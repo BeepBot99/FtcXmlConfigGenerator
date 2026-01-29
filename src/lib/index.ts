@@ -130,6 +130,10 @@ export const DeviceTypes = {
             displayName: 'Modern Robotics Range Sensor'
         },
         {
+            type: 'goBILDAPinpoint',
+            displayName: 'goBILDA Pinpoint Odometry Computer'
+        },
+        {
             type: 'REV_VL53L0X_RANGE_SENSOR',
             displayName: 'REV 2M Distance Sensor'
         },
