@@ -10,14 +10,23 @@ export interface DeviceType {
 }
 
 export interface LynxModule {
-    motors: Device[];
     servos: Device[];
+}
+
+export interface MotorLynxModule extends LynxModule {
+    motors: Device[];
     i2c: Device[];
     digital: Device[];
     analog: Device[];
 }
 
 export function createEmptyLynxModule(): LynxModule {
+    return {
+        servos: [],
+    }
+}
+
+export function createEmptyMotorLynxModule(): MotorLynxModule {
     return {
         motors: [],
         servos: [],
