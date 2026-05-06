@@ -8,9 +8,11 @@ export interface CodeBuilder {
 
 class XmlBuilder implements CodeBuilder {
     build(controlHub: MotorLynxModule, expansionHub: MotorLynxModule, servoHub: LynxModule): string {
-        const doc = create({version: '1.0', standalone: true, encoding: "UTF-8"})
-            .ele("Robot", {type: "FirstInspires-FTC"})
-            .ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173})
+        const doc = create({version: '1.0', standalone: true, encoding: "UTF-8"}).ele("Robot", {type: "FirstInspires-FTC"});
+        for(const ethernet of controlHub.ethernet) {
+            doc.ele("EthernetDevice", {name: ethernet.name, serialNumber: "EthernetOverUsb:eth0:172.29.0.28", port: "-1", ipAddress: "172.29.0.1"});
+        }
+        doc.ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173});
         const controlHubBuilder = doc.ele("LynxModule", {name: "Control Hub", port: 173});
         XmlBuilder.buildMotorLynxModule(controlHubBuilder, controlHub);
         const expansionHubBuilder = doc.ele("LynxModule", {name: "Expansion Hub 0", port: 0});
@@ -42,9 +44,6 @@ class XmlBuilder implements CodeBuilder {
         }
         for (const analog of module.analog) {
             doc.ele(analog.type.type, {name: analog.name, port: analog.port});
-        }
-        for(const ethernet of module.ethernet) {
-            doc.ele(ethernet.type.type, {name: ethernet.name, serialNumber:"EthernetOverUsb:eth0:172.29.0.28", port: "-1", ipAddress:"172.29.0.1"});
         }
     }
 
