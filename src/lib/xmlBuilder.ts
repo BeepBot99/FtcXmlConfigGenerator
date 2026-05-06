@@ -1,4 +1,4 @@
-import type {LynxModule, MotorLynxModule} from "./index";
+import type {ExpansionLynxModule, LynxModule, MotorLynxModule} from "./index";
 import {create} from "xmlbuilder2";
 import type {XMLBuilder} from "xmlbuilder2/lib/interfaces";
 
@@ -14,7 +14,7 @@ class XmlBuilder implements CodeBuilder {
         const controlHubBuilder = doc.ele("LynxModule", {name: "Control Hub", port: 173});
         XmlBuilder.buildMotorLynxModule(controlHubBuilder, controlHub);
         const expansionHubBuilder = doc.ele("LynxModule", {name: "Expansion Hub 0", port: 0});
-        XmlBuilder.buildMotorLynxModule(expansionHubBuilder, expansionHub);
+        XmlBuilder.buildExpansionLynxModule(expansionHubBuilder, expansionHub);
         const servoHubBuilder = doc.ele("LynxModule", {name: "Servo Hub 1", port: 1});
         XmlBuilder.buildLynxModule(servoHubBuilder, servoHub);
 
@@ -28,6 +28,27 @@ class XmlBuilder implements CodeBuilder {
     }
 
     private static buildMotorLynxModule(doc: XMLBuilder, module: MotorLynxModule) {
+        for (const motor of module.motors) {
+            doc.ele(motor.type.type, {name: motor.name, port: motor.port});
+        }
+        for (const servo of module.servos) {
+            doc.ele(servo.type.type, {name: servo.name, port: servo.port});
+        }
+        for (const i2c of module.i2c) {
+            doc.ele(i2c.type.type, {name: i2c.name, port: 0, bus: i2c.port});
+        }
+        for (const digital of module.digital) {
+            doc.ele(digital.type.type, {name: digital.name, port: digital.port});
+        }
+        for (const analog of module.analog) {
+            doc.ele(analog.type.type, {name: analog.name, port: analog.port});
+        }
+        for(const ethernet of module.ethernet) {
+            doc.ele(ethernet.type.type, {name: ethernet.name, serialNumber:"EthernetOverUsb:eth0:172.29.0.28", port: "-1", ipAddress:"172.29.0.1"});
+        }
+    }
+
+    private static buildExpansionLynxModule(doc: XMLBuilder, module: ExpansionLynxModule) {
         for (const motor of module.motors) {
             doc.ele(motor.type.type, {name: motor.name, port: motor.port});
         }

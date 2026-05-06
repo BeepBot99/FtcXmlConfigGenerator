@@ -1,11 +1,11 @@
 <script lang="ts">
-    import {type Device, DeviceTypes, type LynxModule, type MotorLynxModule} from "./index";
+    import {type Device, DeviceTypes, type LynxModule, type ExpansionLynxModule} from "./index";
     import DeviceGroup from "./DeviceGroup.svelte";
 
     interface Props {
         name: string;
         checked?: boolean;
-        module: MotorLynxModule;
+        module: ExpansionLynxModule;
     }
 
     let {name, checked = false, module = $bindable()}: Props = $props();
@@ -18,5 +18,6 @@
     <DeviceGroup type="I<sup>2</sup>C Devices" bind:devices={module.i2c} deviceTypes={DeviceTypes.I2C}/>
     <DeviceGroup type="Digital Devices" bind:devices={module.digital} deviceTypes={DeviceTypes.DIGITAL}/>
     <DeviceGroup type="Analog Devices" bind:devices={module.analog} deviceTypes={DeviceTypes.ANALOG}/>
-    <DeviceGroup type="Ethernet Devices" bind:devices={module.ethernet} deviceTypes={DeviceTypes.ETHERNET}/>
+    <!-- Diffrence between ExpansionHub and MotorHub is that ExpansionHub doesn't have ethernet devices cause there are no useable usb ports -->
+     <!-- This also means that I changed the thing in App.svelte to use the new ExpansionHub layout -->
 </div>

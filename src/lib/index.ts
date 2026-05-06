@@ -18,6 +18,14 @@ export interface MotorLynxModule extends LynxModule {
     i2c: Device[];
     digital: Device[];
     analog: Device[];
+    ethernet: Device[]
+}
+
+export interface ExpansionLynxModule extends LynxModule {
+    motors: Device[];
+    i2c: Device[];
+    digital: Device[];
+    analog: Device[];
 }
 
 export function createEmptyLynxModule(): LynxModule {
@@ -32,7 +40,18 @@ export function createEmptyMotorLynxModule(): MotorLynxModule {
         servos: [],
         i2c: [],
         digital: [],
-        analog: []
+        analog: [],
+        ethernet:[],
+    }
+}
+
+export function createEmptyExpansionLynxModule(): ExpansionLynxModule {
+    return {
+        motors: [],
+        servos: [],
+        i2c: [],
+        digital: [],
+        analog: [],
     }
 }
 
@@ -190,6 +209,12 @@ export const DeviceTypes = {
         {
             type: 'AnalogDevice',
             displayName: 'Analog Device'
+        }
+    ],
+    ETHERNET: [
+        {
+            type: 'EthernetDevice',
+            displayName: 'Limelight 3a'
         }
     ]
 } as const;
