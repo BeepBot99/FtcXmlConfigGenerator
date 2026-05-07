@@ -8,19 +8,25 @@ export interface CodeBuilder {
 
 class XmlBuilder implements CodeBuilder {
     build(controlHub: MotorLynxModule, expansionHub: MotorLynxModule, servoHub: LynxModule): string {
-        const doc = create({version: '1.0', standalone: true, encoding: "UTF-8"}).ele("Robot", {type: "FirstInspires-FTC"});
+        const doc = create({version: '1.0', standalone: true, encoding: "UTF-8"});
+
+        const robotBlock = doc.ele("Robot", {type: "FirstInspires-FTC"});
         for(const ethernet of controlHub.ethernet) {
-            doc.ele("EthernetDevice", {name: ethernet.name, serialNumber: "EthernetOverUsb:eth0:172.29.0.28", port: "-1", ipAddress: "172.29.0.1"});
+            robotBlock.ele("EthernetDevice", {name: ethernet.name, serialNumber: "EthernetOverUsb:eth0:172.29.0.28", port: "-1", ipAddress: "172.29.0.1"});
         }
-        doc.ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173});
-        const controlHubBuilder = doc.ele("LynxModule", {name: "Control Hub", port: 173});
-        XmlBuilder.buildMotorLynxModule(controlHubBuilder, controlHub);
-        if(expansionHub.analog.length != 0 || expansionHub.digital.length != 0 || expansionHub.i2c.length != 0 || expansionHub.motors.length != 0 || expansionHub.servos.length != 0) {
-            const expansionHubBuilder = doc.ele("LynxModule", {name: "Expansion Hub 0", port: 0});
+
+        const portalBlock = robotBlock.ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173});
+
+        const controlHubBlock = portalBlock.ele("LynxModule", {name: "Control Hub", port: 173});
+        XmlBuilder.buildMotorLynxModule(controlHubBlock, controlHub);
+        
+        if(expansionHub.analog.length !== 0 || expansionHub.digital.length !== 0 || expansionHub.i2c.length !== 0 || expansionHub.motors.length !== 0 || expansionHub.servos.length !== 0) {
+            const expansionHubBuilder = portalBlock.ele("LynxModule", {name: "Expansion Hub 0", port: 0});
             XmlBuilder.buildExpansionLynxModule(expansionHubBuilder, expansionHub);
         }
-        if(servoHub.servos.length != 0) {
-            const servoHubBuilder = doc.ele("LynxModule", {name: "Servo Hub 1", port: 1});
+        
+        if(servoHub.servos.length !== 0) {
+            const servoHubBuilder = portalBlock.ele("LynxModule", {name: "Servo Hub 1", port: 1});
             XmlBuilder.buildLynxModule(servoHubBuilder, servoHub);
         }
         
