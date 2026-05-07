@@ -4,6 +4,7 @@
     import xmlBuilder from "./lib/xmlBuilder.js";
     import {createEmptyLynxModule, createEmptyMotorLynxModule, type LynxModule, type MotorLynxModule} from "./lib";
     import MotorHub from "./lib/MotorHub.svelte";
+    import ExpansionHub from "./lib/ExpansionHub.svelte";
 
     let controlHub: MotorLynxModule = $state(createEmptyMotorLynxModule());
     let expansionHub: MotorLynxModule = $state(createEmptyMotorLynxModule());
@@ -21,7 +22,7 @@
          class="lg:block bg-base-200 mb-16 lg:mb-0 lg:rounded-md lg:shadow-sm lg:border-2 lg:border-base-content/20 p-4 lg:p-6">
         <div class="tabs tabs-lift h-[calc(100%---spacing(10))]">
             <MotorHub name="Control Hub" bind:module={controlHub} checked={true}/>
-            <MotorHub name="Expansion Hub" bind:module={expansionHub}/>
+            <ExpansionHub name="Expansion Hub" bind:module={expansionHub}/>
             <Hub name="Servo Hub" bind:module={servoHub}/>
         </div>
     </div>
