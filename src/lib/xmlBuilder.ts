@@ -15,11 +15,15 @@ class XmlBuilder implements CodeBuilder {
         doc.ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173});
         const controlHubBuilder = doc.ele("LynxModule", {name: "Control Hub", port: 173});
         XmlBuilder.buildMotorLynxModule(controlHubBuilder, controlHub);
-        const expansionHubBuilder = doc.ele("LynxModule", {name: "Expansion Hub 0", port: 0});
-        XmlBuilder.buildExpansionLynxModule(expansionHubBuilder, expansionHub);
-        const servoHubBuilder = doc.ele("LynxModule", {name: "Servo Hub 1", port: 1});
-        XmlBuilder.buildLynxModule(servoHubBuilder, servoHub);
-
+        if(expansionHub.analog.length != 0 || expansionHub.digital.length != 0 || expansionHub.i2c.length != 0 || expansionHub.motors.length != 0 || expansionHub.servos.length != 0) {
+            const expansionHubBuilder = doc.ele("LynxModule", {name: "Expansion Hub 0", port: 0});
+            XmlBuilder.buildExpansionLynxModule(expansionHubBuilder, expansionHub);
+        }
+        if(servoHub.servos.length != 0) {
+            const servoHubBuilder = doc.ele("LynxModule", {name: "Servo Hub 1", port: 1});
+            XmlBuilder.buildLynxModule(servoHubBuilder, servoHub);
+        }
+        
         return doc.end({prettyPrint: true});
     }
 
