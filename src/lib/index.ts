@@ -211,35 +211,15 @@ export const DeviceTypes = {
             displayName: 'Analog Device'
         }
     ],
-    USB: [ // Cause limelight and other cameras plug via usb, imma change all of them to be under the "usb" catagory
+    USB: [ // Cause limelight and other cameras plug via usb, changed it so both webcams and limelight are in a new usb catagory
         {
             type: 'Limelight3a',
             displayName: 'Limelight 3a'
         },
-        // Each webcam has a specific serial that (I think?) dictates what type of usb camera it is to the ftc sdk. However, this 
-        // meas that every camera will have to have its own serial, which I imagine will leave some cameras out. Ideally, the solution
-        // would be to have a text entry box for the serial number, which I imagine could be the port box. However, that is number
-        // only and I don't want to mess with it. Imma do some presets, and then a "custom" selection that will use a seperator 
-        // to allow custom names and serial.
-
-        // after some pondering I have realized that i'm pretty sure that the serial numbers change between cameras. Idea scratched, doing the
-        // custom serial entry 
-        {
+        { // Each webcam has its own serial number, so create a 'generic' selection where user will specify the serial number themselves
             type: 'GenericWebcam',
             displayName: 'Generic Webcam (Name@Serial)'
         }
-        // {
-        //     type: 'c270',
-        //     displayName: 'Logitech c270 (c270)'
-        // },
-        // {
-        //     type: 'c310',
-        //     displayName: 'Logitech c310 (c310)'
-        // },
-        // {
-        //     type: 'c920',
-        //     displayName: 'Logitech c920 (c920)'
-        // }
     ]
 } as const;
 

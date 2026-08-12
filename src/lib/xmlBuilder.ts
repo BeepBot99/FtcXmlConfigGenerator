@@ -13,9 +13,9 @@ class XmlBuilder implements CodeBuilder {
         const robotBlock = doc.ele("Robot", {type: "FirstInspires-FTC"});
 
         for(const usb of controlHub.usb) {
-            if (usb.type.type === "Limelight3a") {
+            if (usb.type.type === "Limelight3a") { // limelight and webcam go in different spots, so all usb devices with limelight type are made up here
                 robotBlock.ele("EthernetDevice", {name: usb.name.split("@")[0], serialNumber: `EthernetOverUsb:eth0:${usb.name.includes("@") ? usb.name.split("@")[1]: "172.29.0.28"}`, port: "-1", ipAddress: "172.29.0.1"});
-            }
+            } // If no @ is present, default to 172.29.0.28. Otherwise put in user specified ip
         }
 
         const portalBlock = robotBlock.ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173});
@@ -36,6 +36,7 @@ class XmlBuilder implements CodeBuilder {
         for(const usb of controlHub.usb) {
             if (usb.type.type === "GenericWebcam") {
                 robotBlock.ele("Webcam", {name: usb.name.split("@")[0], serialNumber: usb.name.split("@")[1]});
+                // Serial number is the stuff after the @
             }
         }
         

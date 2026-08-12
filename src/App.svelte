@@ -25,7 +25,7 @@
             <MotorHub name="Control Hub" bind:module={controlHub} checked={true}/>
             <ExpansionHub name="Expansion Hub" bind:module={expansionHub}/>
             <Hub name="Servo Hub" bind:module={servoHub}/>
-            <Help name="Help"/>
+            <Help name="Help"/> <!-- create new help page and add it to the nav thing -->
         </div>
     </div>
 </div>

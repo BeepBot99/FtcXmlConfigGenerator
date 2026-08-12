@@ -1,14 +1,9 @@
 <script lang="ts">
-    // import {type Device, DeviceTypes, type LynxModule, type MotorLynxModule} from "./index";
-    // import DeviceGroup from "./DeviceGroup.svelte";
-
     interface Props {
         name: string;
         checked?: boolean;
-        // module: MotorLynxModule;
     }
 
-    // let {name, checked = false, module = $bindable()}: Props = $props();
     let {name, checked = false}: Props = $props();
 </script>
 
