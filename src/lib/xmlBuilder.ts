@@ -1,4 +1,4 @@
-import type {ExpansionLynxModule, LynxModule, MotorLynxModule} from "./index";
+import {DeviceTypes, type ExpansionLynxModule, type LynxModule, type MotorLynxModule} from "./index";
 import {create} from "xmlbuilder2";
 import type {XMLBuilder} from "xmlbuilder2/lib/interfaces";
 
@@ -11,8 +11,11 @@ class XmlBuilder implements CodeBuilder {
         const doc = create({version: '1.0', standalone: true, encoding: "UTF-8"});
 
         const robotBlock = doc.ele("Robot", {type: "FirstInspires-FTC"});
-        for(const ethernet of controlHub.ethernet) {
-            robotBlock.ele("EthernetDevice", {name: ethernet.name, serialNumber: "EthernetOverUsb:eth0:172.29.0.28", port: "-1", ipAddress: "172.29.0.1"});
+
+        for(const usb of controlHub.usb) {
+            if (usb.type.type === "Limelight3a") { // limelight and webcam go in different spots, so all usb devices with limelight type are made up here
+                robotBlock.ele("EthernetDevice", {name: usb.name.split("@")[0], serialNumber: `EthernetOverUsb:eth0:${usb.name.includes("@") ? usb.name.split("@")[1]: "172.29.0.28"}`, port: "-1", ipAddress: "172.29.0.1"});
+            } // If no @ is present, default to 172.29.0.28. Otherwise put in user specified ip
         }
 
         const portalBlock = robotBlock.ele("LynxUsbDevice", {name: "Control Hub Portal", serialNumber: "(embedded)", parentModuleAddress: 173});
@@ -28,6 +31,13 @@ class XmlBuilder implements CodeBuilder {
         if(servoHub.servos.length !== 0) {
             const servoHubBuilder = portalBlock.ele("LynxModule", {name: "Servo Hub 1", port: 1});
             XmlBuilder.buildLynxModule(servoHubBuilder, servoHub);
+        }
+
+        for(const usb of controlHub.usb) {
+            if (usb.type.type === "GenericWebcam") {
+                robotBlock.ele("Webcam", {name: usb.name.split("@")[0], serialNumber: usb.name.split("@")[1]});
+                // Serial number is the stuff after the @
+            }
         }
         
         return doc.end({prettyPrint: true});

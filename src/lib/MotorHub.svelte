@@ -18,5 +18,5 @@
     <DeviceGroup type="I<sup>2</sup>C Devices" bind:devices={module.i2c} deviceTypes={DeviceTypes.I2C}/>
     <DeviceGroup type="Digital Devices" bind:devices={module.digital} deviceTypes={DeviceTypes.DIGITAL}/>
     <DeviceGroup type="Analog Devices" bind:devices={module.analog} deviceTypes={DeviceTypes.ANALOG}/>
-    <DeviceGroup type="Ethernet Devices" bind:devices={module.ethernet} deviceTypes={DeviceTypes.ETHERNET}/>
+    <DeviceGroup type="USB Devices" bind:devices={module.usb} deviceTypes={DeviceTypes.USB}/>
 </div>

@@ -18,7 +18,7 @@ export interface MotorLynxModule extends LynxModule {
     i2c: Device[];
     digital: Device[];
     analog: Device[];
-    ethernet: Device[]
+    usb: Device[]
 }
 
 export interface ExpansionLynxModule extends LynxModule {
@@ -41,7 +41,7 @@ export function createEmptyMotorLynxModule(): MotorLynxModule {
         i2c: [],
         digital: [],
         analog: [],
-        ethernet:[],
+        usb:[],
     }
 }
 
@@ -211,10 +211,14 @@ export const DeviceTypes = {
             displayName: 'Analog Device'
         }
     ],
-    ETHERNET: [
+    USB: [ // Cause limelight and other cameras plug via usb, changed it so both webcams and limelight are in a new usb catagory
         {
-            type: 'EthernetDevice',
+            type: 'Limelight3a',
             displayName: 'Limelight 3a'
+        },
+        { // Each webcam has its own serial number, so create a 'generic' selection where user will specify the serial number themselves
+            type: 'GenericWebcam',
+            displayName: 'Generic Webcam (Name@Serial)'
         }
     ]
 } as const;
